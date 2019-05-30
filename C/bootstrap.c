@@ -4,10 +4,13 @@
 #include <assert.h>
 #include <limits.h>
 
-#define SIZE 100
-#define BINCOUNT 30
-#define RANDOM (rand() % 10000)
+#define SIZE 100                // How many samples to bootstrap with
+#define BINCOUNT 30             // How many bins to do the graph with
+#define RANDOM (rand() % 10000) // Picks random values between 0 and 10000
 
+/*
+ * Picks random samples from an array and returns an array of the same length
+ */
 int *bs_sample(int *arr, int len) {
     int i;
     int *sample = malloc(len * sizeof(int));
@@ -19,6 +22,9 @@ int *bs_sample(int *arr, int len) {
     return sample;
 }
 
+/*
+ * Returns the mean value of a bootstrap sample
+ */
 double bs_replicate(int *arr, int len) {
     int i, count = 0;
     int *sample = bs_sample(arr, len);
@@ -29,6 +35,9 @@ double bs_replicate(int *arr, int len) {
     return (double) count / len;
 }
 
+/*
+ * Draws a specified amount of bootstrap samples and returns an array
+ */
 double *draw_bs_reps(int *arr, int len, int iter) {
     int i;
     double *reps = malloc(iter * sizeof(double));
@@ -53,18 +62,21 @@ int main(int argc, char *argv[]) {
         exit(1);
     }
 
-    iter = argc == 3 ? atoi(argv[1]) : 10000;
+    iter = argc == 3 ? atoi(argv[1]) : 10000; // If not specified in command line args, sets iterations to 10000
     filename = argc == 3 ? argv[2] : argv[1];
-    strcat(filename, ".csv");
+    strcat(filename, ".csv");                 // We will use CSV so it'll be easy to graph in MS Excel
     f = fopen(filename, "w+");
     arr = malloc(SIZE * sizeof(int));
     assert(arr != NULL);
     for (i = 0; i < SIZE; i++) {
+        // Pulling random samples from defined macro
         arr[i] = RANDOM;
     }
- 
+    
+    // Get bootstrap replicates
     reps = draw_bs_reps(arr, SIZE, iter);
    
+    // Get min and max of reps so we can calculate bincounts
     for (i = 0; i < iter; i++) {
         if (reps[i] > max) {
             max = reps[i];
@@ -73,7 +85,8 @@ int main(int argc, char *argv[]) {
             min = reps[i];
         }
     }
-
+    
+    // Bin increment
     inc = (max - min) / BINCOUNT;
 
     for (i = 0; i < iter; i++) {
@@ -82,6 +95,7 @@ int main(int argc, char *argv[]) {
         count = 0;
         while (temp < max) {
             if (rep <= temp) {
+                // Records count in bin if sample is less than threshold
                 bins[count]++;
                 break;
             }
@@ -94,10 +108,11 @@ int main(int argc, char *argv[]) {
     temp = min;
     for (i = 0; i < BINCOUNT; i++) {
         for (j = 0; j < BINCOUNT; j++, temp += inc / BINCOUNT) {
+            // Writes BINCOUNT number of data points for each bin to the CSV
             fprintf(f, "%f,%d\n", temp, bins[i]);
         }
     }
-
+   
     fclose(f);
     free(arr);
     free(reps);
