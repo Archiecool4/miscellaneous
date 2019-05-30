@@ -12,11 +12,11 @@
  * Picks random samples from an array and returns an array of the same length
  */
 int *bs_sample(int *arr, int len) {
-    int i;
+    int i, idx;
     int *sample = malloc(len * sizeof(int));
     assert(sample != NULL);
     for (i = 0; i < len; i++) {
-        int idx = (rand() % len);
+        idx = (rand() % len);
         sample[i] = arr[idx];
     }
     return sample;
