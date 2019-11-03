@@ -1,0 +1,129 @@
+<canvas id="can" width="500" height="500"></canvas>
+<script>
+
+window.onload = function() {
+    canv = document.getElementById("can");
+    scr = canv.getContext("2d");
+    document.addEventListener("keydown", keyPush);
+    setInterval(game, 60);
+    init();
+}
+
+var dir, snake, fruitX, fruitY, size, gameOver, pause;
+
+function init() {
+    dir = 2;
+    snake = [[0, 0], [1, 0], [2, 0]];
+    size = 10;
+    fruitX = Math.floor(Math.random() * canv.width / size);
+    fruitY = Math.floor(Math.random() * canv.height / size);
+    gameOver = false;
+    pause = false;
+}
+
+function game() {
+    if (!gameOver) {
+        if (pause) {
+            return;
+        }
+        let newHead = [];
+        switch (dir) {
+            case 0:
+                newHead[0] = snake[snake.length - 1][0] - 1;
+                newHead[1] = snake[snake.length - 1][1];
+                break;
+            case 1:
+                newHead[0] = snake[snake.length - 1][0];
+                newHead[1] = snake[snake.length - 1][1] - 1;
+                break;
+            case 2:
+                newHead[0] = snake[snake.length - 1][0] + 1;
+                newHead[1] = snake[snake.length - 1][1];
+                break;
+            case 3:
+                newHead[1] = snake[snake.length - 1][1] + 1;
+                newHead[0] = snake[snake.length - 1][0];
+                break;
+        }
+
+        if (newHead[0] == canv.width / size) {
+            newHead[0] = 0;
+        }
+        else if (newHead[0] == -1) {
+            newHead[0] = canv.width / size - 1;
+        }
+        if (newHead[1] == canv.height / size) {
+            newHead[1] = 0;
+        }
+        else if (newHead[1] == -1) {
+            newHead[1] = canv.height / size - 1;
+        }
+
+        for (let i = 0; i < snake.length; i++) {
+            if (snake[i][0] == newHead[0] && snake[i][1] == newHead[1]) {
+                gameOver = true;
+            }
+        }
+        
+        snake.push(newHead);
+
+        if (newHead[0] == fruitX && newHead[1] == fruitY) {
+            fruitX = Math.floor(Math.random() * canv.width / size);
+            fruitY = Math.floor(Math.random() * canv.height / size);
+        }
+        else {
+            snake.shift();
+        }
+
+        scr.fillStyle = "black";
+        scr.fillRect(0, 0, canv.width, canv.height);
+
+        scr.fillStyle = "lime";
+        for (let i = 0; i < snake.length; i++) {
+            let block = snake[i].map(x => x * size);
+            scr.fillRect(block[0], block[1], size, size);
+        }
+
+        scr.fillStyle = "red";
+        scr.fillRect(fruitX * size, fruitY * size, size, size);
+    }
+    else {
+        scr.font = "30px Arial";
+        scr.textAlign = "center";
+        scr.fillText("Game Over!! Press R!", canv.width / 2, canv.height / 2);
+    }
+}
+
+function keyPush(event) {
+    switch (event.keyCode) {
+        case 37: // Left
+            if (dir != 2) {
+                dir = 0;
+            }
+            break;
+        case 38: // Up
+            if (dir != 3) {
+                dir = 1;
+            }
+            break;
+        case 39: // Right
+            if (dir != 0) {
+                dir = 2;
+            }
+            break;
+        case 40: // Down
+            if (dir != 1) {
+                dir = 3;
+            }
+            break;
+        case 80: // P
+            pause = !pause;
+            break;
+        case 82: // R
+            if (gameOver) {
+                init();
+            }
+            break;
+    }
+}
+</script>
