@@ -47,7 +47,7 @@ void evaluate(FILE *prog, char *ptr) {
             case ',':
                 *ptr = getchar();
                 break;
-            case '[': {
+            case '[':
                 if (*ptr == 0) {
                     // Deal with nested loops
                     int loop = 1;
@@ -62,7 +62,6 @@ void evaluate(FILE *prog, char *ptr) {
                     }
                 }
                 break;
-            }
             case ']':
                 if (*ptr != 0) {
                     int loop = 1;
