@@ -15,3 +15,4 @@ These are just some random things I coded in my free time.
 - Python
   - `SIR.py`: I used the classical fourth-order Runge-Kutta method to numerically solve the SIR epidemiological model. I became interested in this 
     because of the current COVID-19 pandemic. The computed solutions can be seen in the included diagram.
+  - `denoising_images.ipynb`: A student asked for a little coding sample of what an autoencoder can do so I put it here so the class could easily see it. A deep ReLU autoencoder is used to denoise MNIST images with keras. The image `reconstructed.png` shows the noisy images on the left and denoised images on the right.
