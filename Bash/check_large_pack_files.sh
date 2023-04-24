@@ -64,12 +64,12 @@ find_large_files() {
 
                 # Indicate containment and print file information
                 if echo "$BRANCHES" | grep -q $BRANCH; then
-                        echo "File ${BLOBPATHS[i]} is referenced in commit $COMMITHASH,"\
-                                "takes up $(echo "${BLOBSIZES[i]}" | numfmt --to=iec),"\
+                        echo "File ${BLOBPATHS[i]} is referenced in commit $COMMITHASH," \
+                                "takes up $(echo "${BLOBSIZES[i]}" | numfmt --to=iec)," \
                                 "and is in $BRANCH."
                 else
-                        echo "File ${BLOBPATHS[i]} is referenced in commit $COMMITHASH,"\
-                                "takes up $(echo "${BLOBSIZES[i]}" | numfmt --to=iec),"\
+                        echo "File ${BLOBPATHS[i]} is referenced in commit $COMMITHASH," \
+                                "takes up $(echo "${BLOBSIZES[i]}" | numfmt --to=iec)," \
                                 "and is not in $BRANCH."
                 fi
                 echo
