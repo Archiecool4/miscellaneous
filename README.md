@@ -1,6 +1,9 @@
 # Miscellaneous
 These are just some random things I coded in my free time.
 
+- Bash
+  - `check_large_pack_files.sh`: I wrote a script to sort through large objects in the pack of Git repositories. It identifies the largest `NUMFILES` blobs in the pack,
+    reports its size, commit hash it was introduced in, and checks their containment in the specified `BRANCH`. The default arguments are the 10 largest files and containment in `origin/main`. 
 - C++
   - `quicksorter.cpp`: I coded the quicksort algorithm as my first C++ program. It takes in integers from the command line.
 - C
