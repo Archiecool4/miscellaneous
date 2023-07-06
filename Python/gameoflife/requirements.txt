@@ -2,5 +2,5 @@ backports.shutil-get-terminal-size==1.0.0
 colorama==0.4.4
 numpy==1.19.5
 reprint==0.6.0
-scipy==1.5.4
+scipy==1.10.0
 six==1.15.0
